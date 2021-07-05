@@ -21,4 +21,4 @@ class Domain(Model):
 class Record(Model):
     id = fields.CharField(max_length=255, pk=True)
     domain = fields.ForeignKeyField('models.Domain', 'records')
-    address = fields.CharField(max_length=36, null=True)
+    address = fields.CharField(max_length=36, null=True, index=True)

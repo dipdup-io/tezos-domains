@@ -11,4 +11,5 @@ tests
 *.json
 *.zip
 docker-compose.yml
+docker-compose.local.yml
 Dockerfile

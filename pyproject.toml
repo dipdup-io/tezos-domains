@@ -6,7 +6,7 @@ authors = ["Lev Gorodetskiy <github@droserasprout.space>"]
 
 [tool.poetry.dependencies]
 python = "^3.8"
-dipdup = {git = "https://github.com/dipdup-net/dipdup-py.git"}
+dipdup = "^2.0.8"
 
 [tool.poetry.dev-dependencies]
 mypy = "^0.812"

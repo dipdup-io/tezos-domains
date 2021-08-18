@@ -1,0 +1,12 @@
+query TezosDomainsUpdatesQuery($limit: Int, $update_id: Int) {
+  record(where: {updateId: {_gt: $update_id}}, limit: $limit, order_by: {updateId: asc}) {
+    id
+    address
+    domain {
+      id
+      owner
+      tokenId
+    }
+    updateId
+  }
+}

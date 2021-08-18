@@ -5,8 +5,16 @@ database:
   user: ${POSTGRES_USER:-dipdup}
   password: ${POSTGRES_PASSWORD:-changeme}
   database: ${POSTGRES_DB:-dipdup}
-  schema_name: tezos_domains_big_map
+  schema_name: tezos_domains
 
 hasura:
   url: http://hasura:8080
   admin_secret: ${ADMIN_SECRET:-changeme}
+  allow_aggregations: false
+  camel_case: true
+  select_limit: 100
+  rest: true
+
+sentry:
+  dsn: https://27d26eb33f1b4633852c2a0e9855bd3a@sentry.baking-bad.org/9
+  environment: production

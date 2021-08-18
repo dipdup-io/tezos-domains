@@ -22,3 +22,11 @@ class Record(Model):
     id = fields.CharField(max_length=255, pk=True)
     domain = fields.ForeignKeyField('models.Domain', 'records')
     address = fields.CharField(max_length=36, null=True, index=True)
+    update_id = fields.IntField(default=0)
+
+
+class TokenMetadata(Model):
+    token_id = fields.BigIntField(pk=True)
+    contract = fields.CharField(max_length=36)
+    update_id = fields.IntField(default=0)
+    metadata = fields.JSONField()

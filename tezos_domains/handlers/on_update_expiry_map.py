@@ -1,6 +1,6 @@
-import dipdup_tezos_domains.models as models
-from dipdup_tezos_domains.types.name_registry.big_map.store_expiry_map_key import StoreExpiryMapKey
-from dipdup_tezos_domains.types.name_registry.big_map.store_expiry_map_value import StoreExpiryMapValue
+import tezos_domains.models as models
+from tezos_domains.types.name_registry.big_map.store_expiry_map_key import StoreExpiryMapKey
+from tezos_domains.types.name_registry.big_map.store_expiry_map_value import StoreExpiryMapValue
 from dipdup.context import HandlerContext
 from dipdup.models import BigMapDiff
 

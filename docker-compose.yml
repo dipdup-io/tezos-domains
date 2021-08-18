@@ -67,6 +67,6 @@ volumes:
   db:
 
 networks:
-  metadata-network:
+  domains-network:
   traefik-public:
     external: true

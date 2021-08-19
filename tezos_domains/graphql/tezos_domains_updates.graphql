@@ -6,6 +6,7 @@ query TezosDomainsUpdatesQuery($limit: Int, $update_id: Int) {
       id
       owner
       tokenId
+      expiresAt
     }
     updateId
   }

@@ -65,12 +65,16 @@ async def on_update_records(
                         update_id=update_id
                     ))
 
+            expiry = await models.Expiry.get_or_none(id=record_name)
+            expires_at = expiry.expires_at if expiry else None
+
             await models.Domain.update_or_create(
                 id=record_name,
                 defaults=dict(
                     tld_id=record_path[-1],
                     owner=store_records.value.owner,
-                    token_id=token_id
+                    token_id=token_id,
+                    expires_at=expires_at
                 )
             )
 

@@ -254,7 +254,7 @@ http = ["httpx"]
 
 [[package]]
 name = "dipdup"
-version = "2.0.8"
+version = "2.0.9"
 description = "Python SDK for developing indexers of Tezos smart contracts inspired by The Graph"
 category = "main"
 optional = false
@@ -642,7 +642,7 @@ use_chardet_on_py3 = ["chardet (>=3.0.2,<5)"]
 
 [[package]]
 name = "ruamel.yaml"
-version = "0.17.10"
+version = "0.17.11"
 description = "ruamel.yaml is a YAML parser/emitter that supports roundtrip preservation of comments, seq/map flow style, and map key order"
 category = "main"
 optional = false
@@ -843,7 +843,7 @@ multidict = ">=4.0"
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.8"
-content-hash = "0d6cd78617e921d3f9e4cbfc0291bc54a58f9562428a602d8125a84c1d0a0747"
+content-hash = "3d8380ea0b1013e028b9c891ddfadc097cc83e98db08c89406978bf8d5efe96e"
 
 [metadata.files]
 aiohttp = [
@@ -970,8 +970,8 @@ datamodel-code-generator = [
     {file = "datamodel_code_generator-0.11.11-py3-none-any.whl", hash = "sha256:a318cfea9d4ab736e0da4121c5612006c9045e576ff3c3e58be7829a8c1e706d"},
 ]
 dipdup = [
-    {file = "dipdup-2.0.8-py3-none-any.whl", hash = "sha256:c8c137c8a2ee9c016668f60791e1ed813710be0072e54ecd41200c82e28febe4"},
-    {file = "dipdup-2.0.8.tar.gz", hash = "sha256:1310d42c78bae08a668702ac70e8d056e4bc74fd2bffd6476dd34b618bba9b31"},
+    {file = "dipdup-2.0.9-py3-none-any.whl", hash = "sha256:23527badc4c8be427a20fd236f783192d953bd539de22c0b3ed4629cbe9928ef"},
+    {file = "dipdup-2.0.9.tar.gz", hash = "sha256:6738b9c981a08a8eca55272f29610a3f73a7b58710bdfa18d7cd592ea3fc42cc"},
 ]
 dnspython = [
     {file = "dnspython-2.1.0-py3-none-any.whl", hash = "sha256:95d12f6ef0317118d2a1a6fc49aac65ffec7eb8087474158f42f26a639135216"},
@@ -1309,8 +1309,8 @@ requests = [
     {file = "requests-2.26.0.tar.gz", hash = "sha256:b8aa58f8cf793ffd8782d3d8cb19e66ef36f7aba4353eec859e74678b01b07a7"},
 ]
 "ruamel.yaml" = [
-    {file = "ruamel.yaml-0.17.10-py3-none-any.whl", hash = "sha256:ffb9b703853e9e8b7861606dfdab1026cf02505bade0653d1880f4b2db47f815"},
-    {file = "ruamel.yaml-0.17.10.tar.gz", hash = "sha256:106bc8d6dc6a0ff7c9196a47570432036f41d556b779c6b4e618085f57e39e67"},
+    {file = "ruamel.yaml-0.17.11-py3-none-any.whl", hash = "sha256:505d0c2d7d0ccc2b68eca0e23fb78a86504c2a7e95ec5f2ccb216557c380e152"},
+    {file = "ruamel.yaml-0.17.11.tar.gz", hash = "sha256:b5e96c0a6619830a7733099f0599b56556a963c6114ef64d0ddb4673347b426f"},
 ]
 "ruamel.yaml.clib" = [
     {file = "ruamel.yaml.clib-0.2.6-cp35-cp35m-macosx_10_6_intel.whl", hash = "sha256:cfdb9389d888c5b74af297e51ce357b800dd844898af9d4a547ffc143fa56751"},

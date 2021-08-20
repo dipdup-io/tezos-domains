@@ -55,10 +55,10 @@ services:
       replicas: 1
       labels:
         - traefik.enable=true
-        - traefik.http.services.metadata.loadbalancer.server.port=8080
-        - traefik.http.routers.metadata.rule=Host(`domains.${ROOT_DOMAIN}`)
-        - traefik.http.routers.metadata.entrypoints=http,https,ws,wss
-        - traefik.http.routers.metadata.middlewares=redirect@file
+        - traefik.http.services.domains.loadbalancer.server.port=8080
+        - traefik.http.routers.domains.rule=Host(`domains.${ROOT_DOMAIN}`)
+        - traefik.http.routers.domains.entrypoints=http,https
+        - traefik.http.routers.domains.middlewares=redirect@file
     networks:
       - domains-network
       - traefik-public

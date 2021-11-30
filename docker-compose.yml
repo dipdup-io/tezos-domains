@@ -2,7 +2,6 @@ version: "3.8"
 
 services:
   indexer:
-    image: ${SWARMLET_REGISTRY}/domains:latest
     build: .
     depends_on:
       - db
@@ -12,14 +11,11 @@ services:
     environment:
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-changeme}
       - ADMIN_SECRET=${ADMIN_SECRET:-changeme}
-    deploy:
-      mode: replicated
-      replicas: 1
-    networks:
-      - domains-network
 
   db:
     image: timescale/timescaledb:latest-pg12
+    ports:
+      - 127.0.0.1:5432:5432
     restart: always
     volumes:
       - db:/var/lib/postgres/data
@@ -32,41 +28,21 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
-    deploy:
-      mode: replicated
-      replicas: 1
-    networks:
-      - domains-network
 
   hasura:
     image: hasura/graphql-engine:v2.0.1
+    ports:
+      - 127.0.0.1:8080:8080
     depends_on:
       - db
     restart: always
     environment:
       - HASURA_GRAPHQL_DATABASE_URL=postgres://dipdup:${POSTGRES_PASSWORD:-changeme}@db:5432/dipdup
-      - HASURA_GRAPHQL_ENABLE_CONSOLE=false
-      - HASURA_GRAPHQL_DEV_MODE=false
+      - HASURA_GRAPHQL_ENABLE_CONSOLE=true
+      - HASURA_GRAPHQL_DEV_MODE=true
       - HASURA_GRAPHQL_ENABLED_LOG_TYPES=startup, http-log, webhook-log, websocket-log, query-log
       - HASURA_GRAPHQL_ADMIN_SECRET=${ADMIN_SECRET:-changeme}
       - HASURA_GRAPHQL_UNAUTHORIZED_ROLE=user
-    deploy:
-      mode: replicated
-      replicas: 1
-      labels:
-        - traefik.enable=true
-        - traefik.http.services.domains.loadbalancer.server.port=8080
-        - traefik.http.routers.domains.rule=Host(`domains.${ROOT_DOMAIN}`)
-        - traefik.http.routers.domains.entrypoints=http,https
-        - traefik.http.routers.domains.middlewares=redirect@file
-    networks:
-      - domains-network
-      - traefik-public
   
 volumes:
   db:
-
-networks:
-  domains-network:
-  traefik-public:
-    external: true

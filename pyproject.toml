@@ -1,12 +1,12 @@
 [tool.poetry]
 name = "dipdup-tezos-domains"
 version = "0.0.1"
-description = ""
+description = "Selective indexer for Tezos Domains contract suite"
 authors = ["Lev Gorodetskiy <github@droserasprout.space>"]
 
 [tool.poetry.dependencies]
 python = "^3.8"
-dipdup = "^2.0.9"
+dipdup = "^3.1.3"
 strict-rfc3339 = "^0.7"
 
 [tool.poetry.dev-dependencies]

@@ -1,7 +1,7 @@
 .ONESHELL:
 
 up:
-	docker-compose -f docker-compose.local.yml up -d --build
+	docker-compose -f docker-compose.yml up -d --build
 
 down:
-	docker-compose -f docker-compose.local.yml down -v
+	docker-compose -f docker-compose.yml down -v

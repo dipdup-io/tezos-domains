@@ -1,10 +1,12 @@
-import strict_rfc3339
 from datetime import datetime
+
+import strict_rfc3339  # type: ignore
+from dipdup.context import HandlerContext
+from dipdup.models import BigMapDiff
+
 import tezos_domains.models as models
 from tezos_domains.types.name_registry.big_map.store_expiry_map_key import StoreExpiryMapKey
 from tezos_domains.types.name_registry.big_map.store_expiry_map_value import StoreExpiryMapValue
-from dipdup.context import HandlerContext
-from dipdup.models import BigMapDiff
 
 
 async def on_update_expiry_map(
@@ -25,5 +27,5 @@ async def on_update_expiry_map(
 
     domain = await models.Domain.get_or_none(id=record_name)
     if domain is not None:
-        domain.expires_at = expires_at
+        domain.expires_at = expires_at  # type: ignore
         await domain.save()

@@ -33,3 +33,10 @@ indexes:
     values:
       datasource: tzkt_mainnet
       name_registry: mainnet_name_registry
+
+advanced:
+  early_realtime: True
+  metadata_interface: True
+
+prometheus:
+  host: 0.0.0.0

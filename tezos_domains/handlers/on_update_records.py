@@ -43,6 +43,7 @@ async def on_update_records(
             token_id = int(store_records.value.tzip12_token_id) if store_records.value.tzip12_token_id else None
             if token_id is not None:
                 await ctx.update_token_metadata(
+                    network=ctx.datasource.network,
                     address=store_records.data.contract_address,
                     token_id=token_id,
                     metadata={'name': record_name},

@@ -1,8 +1,5 @@
-from typing import Optional
-
 from dipdup.context import HandlerContext
 from dipdup.models import BigMapDiff
-from tortoise.functions import Max
 
 import tezos_domains.models as models
 from tezos_domains.types.name_registry.big_map.store_records_key import StoreRecordsKey
@@ -38,34 +35,35 @@ async def on_update_records(
                 owner=store_records.value.owner,
             ),
         )
-    else:
-        if store_records.value.level == "2":
-            token_id = int(store_records.value.tzip12_token_id) if store_records.value.tzip12_token_id else None
-            if token_id is not None:
-                await ctx.update_token_metadata(
-                    network=ctx.datasource.network,
-                    address=store_records.data.contract_address,
-                    token_id=token_id,
-                    metadata={'name': record_name},
-                )
+        return
 
-            expiry = await models.Expiry.get_or_none(id=record_name)
-            expires_at = expiry.expires_at if expiry else None
-
-            await models.Domain.update_or_create(
-                id=record_name,
-                defaults=dict(
-                    tld_id=record_path[-1],
-                    owner=store_records.value.owner,
-                    token_id=token_id,
-                    expires_at=expires_at,
-                ),
+    if store_records.value.level == "2":
+        token_id = store_records.value.tzip12_token_id
+        if token_id:
+            await ctx.update_token_metadata(
+                network=ctx.datasource.network,
+                address=store_records.data.contract_address,
+                token_id=token_id,
+                metadata={'name': record_name},
             )
 
-        await models.Record.update_or_create(
+        expiry = await models.Expiry.get_or_none(id=record_name)
+        expires_at = expiry.expires_at if expiry else None
+
+        await models.Domain.update_or_create(
             id=record_name,
             defaults=dict(
-                domain_id='.'.join(record_path[-2:]),
-                address=store_records.value.address,
+                tld_id=record_path[-1],
+                owner=store_records.value.owner,
+                token_id=token_id,
+                expires_at=expires_at,
             ),
         )
+
+    await models.Record.update_or_create(
+        id=record_name,
+        defaults=dict(
+            domain_id='.'.join(record_path[-2:]),
+            address=store_records.value.address,
+        ),
+    )

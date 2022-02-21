@@ -5,6 +5,10 @@ class TLD(Model):
     id = fields.CharField(max_length=255, pk=True)
     owner = fields.CharField(max_length=36)
 
+    # FIXME: Tortoise ORM uses "TLD" otherwise
+    class Meta:
+        table = 'tld'
+
 
 class Expiry(Model):
     id = fields.CharField(max_length=255, pk=True)

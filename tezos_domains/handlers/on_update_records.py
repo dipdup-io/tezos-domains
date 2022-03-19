@@ -1,9 +1,22 @@
 from dipdup.context import HandlerContext
 from dipdup.models import BigMapDiff
+from typing import Dict
+import json
 
 import tezos_domains.models as models
 from tezos_domains.types.name_registry.big_map.store_records_key import StoreRecordsKey
 from tezos_domains.types.name_registry.big_map.store_records_value import StoreRecordsValue
+
+
+def decode_domain_data(data: Dict[str, str]) -> Dict[str, str]:
+    res = {}
+    if isinstance(data, dict):
+        for k, v in data.items():
+            try:
+                res[k] = json.loads(bytes.fromhex(v).decode())
+            except (ValueError, UnicodeDecodeError, json.JSONDecodeError):
+                pass
+    return res
 
 
 async def on_update_records(
@@ -44,7 +57,13 @@ async def on_update_records(
                 network=ctx.datasource.network,
                 address=store_records.data.contract_address,
                 token_id=token_id,
-                metadata={'name': record_name},
+                metadata={
+                    'name': record_name,
+                    'symbol': 'TD',
+                    'decimals': '0',
+                    'isBooleanAmount': True,
+                    'domainData': decode_domain_data(store_records.value.data)
+                },
             )
 
         expiry = await models.Expiry.get_or_none(id=record_name)

@@ -10,8 +10,7 @@ hasura:
   url: http://hasura:8080
   admin_secret: ${ADMIN_SECRET:-changeme}
   allow_aggregations: false
-  camel_case: true
-  select_limit: 100
+  select_limit: ${SELECT_LIMIT:-10000}
   rest: true
 
 sentry:

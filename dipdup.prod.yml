@@ -16,3 +16,13 @@ hasura:
 sentry:
   dsn: https://27d26eb33f1b4633852c2a0e9855bd3a@sentry.baking-bad.org/9
   environment: production
+
+advanced:
+  early_realtime: True
+  metadata_interface: True
+  reindex:
+    manual: wipe
+    migration: exception
+    rollback: exception
+    config_modified: ignore
+    schema_modified: ignore

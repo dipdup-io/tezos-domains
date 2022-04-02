@@ -1,7 +1,19 @@
-FROM ghcr.io/dipdup-net/dipdup-py:pr-219
+FROM python:3.10-slim-buster
 
-COPY pyproject.toml poetry.lock ./
-RUN inject_pyproject
+RUN apt update && \
+    apt install -y make git gcc && \
+    rm -rf /var/lib/apt/lists/*
+RUN pip install poetry
 
-COPY tezos_domains tezos_domains
-COPY dipdup.yml dipdup.prod.yml ./
+RUN useradd -ms /bin/bash dipdup
+WORKDIR /home/dipdup/tezos_domains
+
+COPY pyproject.toml poetry.lock README.md ./
+RUN poetry config virtualenvs.create false && poetry install --no-dev
+COPY . ./
+
+RUN chown -R dipdup /home/dipdup/
+USER dipdup
+
+ENTRYPOINT ["dipdup"]
+CMD ["run"]

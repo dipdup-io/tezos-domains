@@ -22,7 +22,7 @@ async def on_update_expiry_map(
     record_name = bytes.fromhex(store_expiry_map.key.__root__).decode()
     await models.Expiry.update_or_create(
         id=record_name,
-        defaults=dict(expires_at=expires_at),
+        defaults={'expires_at': expires_at},
     )
 
     domain = await models.Domain.get_or_none(id=record_name)

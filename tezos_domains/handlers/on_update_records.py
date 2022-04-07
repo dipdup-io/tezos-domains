@@ -1,7 +1,8 @@
+import json
+from typing import Dict
+
 from dipdup.context import HandlerContext
 from dipdup.models import BigMapDiff
-from typing import Dict
-import json
 
 import tezos_domains.models as models
 from tezos_domains.types.name_registry.big_map.store_records_key import StoreRecordsKey
@@ -14,7 +15,7 @@ def decode_domain_data(data: Dict[str, str]) -> Dict[str, str]:
         for k, v in data.items():
             try:
                 res[k] = json.loads(bytes.fromhex(v).decode())
-            except (ValueError, UnicodeDecodeError, json.JSONDecodeError):
+            except (ValueError, json.JSONDecodeError):
                 pass
     return res
 
@@ -44,9 +45,7 @@ async def on_update_records(
     if store_records.value.level == "1":
         await models.TLD.update_or_create(
             id=record_name,
-            defaults=dict(
-                owner=store_records.value.owner,
-            ),
+            defaults={'owner': store_records.value.owner},
         )
         return
 
@@ -62,7 +61,7 @@ async def on_update_records(
                     'symbol': 'TD',
                     'decimals': '0',
                     'isBooleanAmount': True,
-                    'domainData': decode_domain_data(store_records.value.data)
+                    'domainData': decode_domain_data(store_records.value.data),
                 },
             )
 
@@ -71,18 +70,18 @@ async def on_update_records(
 
         await models.Domain.update_or_create(
             id=record_name,
-            defaults=dict(
-                tld_id=record_path[-1],
-                owner=store_records.value.owner,
-                token_id=token_id,
-                expires_at=expires_at,
-            ),
+            defaults={
+                'tld_id': record_path[-1],
+                'owner': store_records.value.owner,
+                'token_id': token_id,
+                'expires_at': expires_at,
+            },
         )
 
     await models.Record.update_or_create(
         id=record_name,
-        defaults=dict(
-            domain_id='.'.join(record_path[-2:]),
-            address=store_records.value.address,
-        ),
+        defaults={
+            'domain_id': '.'.join(record_path[-2:]),
+            'address': store_records.value.address,
+        },
     )

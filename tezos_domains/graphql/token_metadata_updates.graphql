@@ -1,8 +1,0 @@
-query TokenMetadataUpdatesQuery($limit: Int, $update_id: Int) {
-  tokenmetadata(where: {updateId: {_gt: $update_id}}, limit: $limit, order_by: {updateId: asc}) {
-    contract
-    tokenId
-    metadata
-    updateId
-  }
-}

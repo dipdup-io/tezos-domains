@@ -86,11 +86,13 @@ async def on_update_records(
             'address': store_records.value.address,
         },
     )
-    await ctx.update_contract_metadata(
-        network=ctx.datasource.network,
-        address=store_records.value.address,
-        metadata={
-            **decode_domain_data(store_records.value.data),
-            'name': record_name
-        },
-    )
+
+    if store_records.value.address is not None:
+        await ctx.update_contract_metadata(
+            network=ctx.datasource.network,
+            address=store_records.value.address,
+            metadata={
+                **decode_domain_data(store_records.value.data),
+                'name': record_name
+            },
+        )

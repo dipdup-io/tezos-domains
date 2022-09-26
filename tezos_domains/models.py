@@ -1,4 +1,5 @@
-from tortoise import Model, fields
+from tortoise import fields
+from dipdup.models import Model
 
 
 class TLD(Model):

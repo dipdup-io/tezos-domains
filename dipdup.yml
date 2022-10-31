@@ -34,6 +34,16 @@ indexes:
       datasource: tzkt_mainnet
       name_registry: mainnet_name_registry
 
+hooks:
+  check_expiration:
+    callback: check_expiration
+    atomic: False
+
+jobs:
+  check_expiration_hourly:
+    hook: check_expiration
+    crontab: "0 * * * *"
+
 advanced:
   early_realtime: True
   metadata_interface: True

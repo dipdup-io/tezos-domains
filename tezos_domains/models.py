@@ -28,3 +28,5 @@ class Record(Model):
     id = fields.CharField(max_length=511, pk=True)
     domain = fields.ForeignKeyField('models.Domain', 'records')
     address = fields.CharField(max_length=36, null=True, index=True)
+    expired = fields.BooleanField(default=False)
+    metadata = fields.JSONField(null=True)

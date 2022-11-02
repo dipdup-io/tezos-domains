@@ -30,6 +30,7 @@ async def on_update_records(
 
     record_name = bytes.fromhex(store_records.key.__root__).decode()
     record_path = record_name.split('.')
+    domain_data = decode_domain_data(store_records.value.data)
     ctx.logger.info('Processing `%s`', record_name)
 
     if len(record_path) != int(store_records.value.level):
@@ -62,7 +63,7 @@ async def on_update_records(
                     'symbol': 'TD',
                     'decimals': '0',
                     'isBooleanAmount': True,
-                    'domainData': decode_domain_data(store_records.value.data),
+                    'domainData': domain_data,
                 },
             )
 
@@ -84,6 +85,8 @@ async def on_update_records(
         defaults={
             'domain_id': '.'.join(record_path[-2:]),
             'address': store_records.value.address,
+            'expired': False,
+            'metadata': domain_data
         },
     )
 
@@ -92,7 +95,7 @@ async def on_update_records(
             network=ctx.datasource.network,
             address=store_records.value.address,
             metadata={
-                **decode_domain_data(store_records.value.data),
+                **domain_data,
                 'name': record_name
             },
         )

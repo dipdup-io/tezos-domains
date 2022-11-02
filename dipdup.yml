@@ -42,11 +42,8 @@ hooks:
 jobs:
   check_expiration_hourly:
     hook: check_expiration
-    crontab: "0 * * * *"
+    crontab: "* * * * *"
 
 advanced:
   early_realtime: True
   metadata_interface: True
-
-prometheus:
-  host: 0.0.0.0

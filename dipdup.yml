@@ -42,7 +42,7 @@ hooks:
 jobs:
   check_expiration_hourly:
     hook: check_expiration
-    crontab: "* * * * *"
+    crontab: "0 * * * *"
 
 advanced:
   early_realtime: True

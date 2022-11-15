@@ -34,4 +34,10 @@ up:
 	docker-compose -f docker-compose.local.yml up -d db hasura
 
 down:
-	docker-compose -f docker-compose.local.yml down -v 
+	docker-compose -f docker-compose.local.yml down
+
+clear:
+	docker-compose -f docker-compose.local.yml down -v
+
+run:
+	poetry run dipdup -c dipdup.yml -c dipdup.local.yml run

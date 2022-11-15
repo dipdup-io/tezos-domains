@@ -25,7 +25,20 @@ async def on_update_expiry_map(
         defaults={'expires_at': expires_at},
     )
 
-    domain = await models.Domain.get_or_none(id=record_name)
+    domain = await models.Domain.get_or_none(id=record_name).prefetch_related('records')
     if domain is not None:
         domain.expires_at = expires_at  # type: ignore
         await domain.save()
+        if expires_at > datetime.utcnow():
+            ctx.logger.debug('Updating expiration status for all records associated with domain %s (renewal)', domain.id)
+            for record in domain.records:  # type: models.Record
+                record.expired = False
+                await record.save()
+                if record.address is not None:
+                    metadata = {} if record.metadata is None else record.metadata
+                    metadata.update(name=record.id)
+                    await ctx.update_contract_metadata(
+                        network=ctx.datasource.network,
+                        address=record.address,
+                        metadata=metadata,
+                    )

@@ -41,7 +41,7 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           context: tezos_domains
-          file: deploy/Dockerfile
+          file: tezos_domains/deploy/Dockerfile
           push: true
           cache-from: type=gha
           cache-to: type=gha,mode=max

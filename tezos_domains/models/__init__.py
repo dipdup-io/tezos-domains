@@ -1,14 +1,10 @@
-from tortoise import fields
+from dipdup import fields
 from dipdup.models import Model
 
 
 class TLD(Model):
     id = fields.CharField(max_length=511, pk=True)
     owner = fields.CharField(max_length=36)
-
-    # FIXME: Tortoise ORM uses "TLD" otherwise
-    class Meta:
-        table = 'tld'
 
 
 class Expiry(Model):
@@ -18,15 +14,17 @@ class Expiry(Model):
 
 class Domain(Model):
     id = fields.CharField(max_length=511, pk=True)
-    tld = fields.ForeignKeyField('models.TLD', 'domains')
+    tld: fields.ForeignKeyField[TLD] = fields.ForeignKeyField('models.TLD', 'domains')
     owner = fields.CharField(max_length=36)
     token_id = fields.BigIntField(null=True)
     expires_at = fields.DatetimeField(null=True)
 
+    records: fields.ReverseRelation['Record']
+
 
 class Record(Model):
     id = fields.CharField(max_length=511, pk=True)
-    domain = fields.ForeignKeyField('models.Domain', 'records')
+    domain: fields.ForeignKeyField[Domain] = fields.ForeignKeyField('models.Domain', 'records')
     address = fields.CharField(max_length=36, null=True, index=True)
     expired = fields.BooleanField(default=False)
     metadata = fields.JSONField(null=True)

@@ -1,23 +1,20 @@
-spec_version: 1.2
+spec_version: 2.0
 package: tezos_domains
-
-database:
-  kind: sqlite
-  path: tezos_domains_big_map.sqlite3
 
 contracts:
   mainnet_name_registry:
+    kind: tezos
     address: KT1GBZmSxmnKJXGMdMLbugPfLyUPmuLSMwKS
     typename: name_registry
 
 datasources:
   tzkt_mainnet:
-    kind: tzkt
+    kind: tezos.tzkt
     url: ${TZKT_URL:-https://api.tzkt.io}
 
 templates:
   tezos_domains_big_map:
-    kind: big_map
+    kind: tezos.tzkt.big_maps
     datasource: <datasource>
     handlers:
       - callback: on_update_records
@@ -43,7 +40,3 @@ jobs:
   check_expiration_hourly:
     hook: check_expiration
     crontab: "0 * * * *"
-
-advanced:
-  early_realtime: True
-  metadata_interface: True

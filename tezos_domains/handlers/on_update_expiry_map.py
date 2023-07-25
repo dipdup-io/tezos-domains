@@ -1,17 +1,19 @@
 from datetime import datetime
+from typing import cast
 
-import strict_rfc3339  # type: ignore
+import strict_rfc3339  # type: ignore[import]
 from dipdup.context import HandlerContext
-from dipdup.models import BigMapDiff
+from dipdup.datasources.tezos_tzkt import TzktDatasource
+from dipdup.models.tezos_tzkt import TzktBigMapDiff
 
-import tezos_domains.models as models
-from tezos_domains.types.name_registry.big_map.store_expiry_map_key import StoreExpiryMapKey
-from tezos_domains.types.name_registry.big_map.store_expiry_map_value import StoreExpiryMapValue
+from tezos_domains import models as models
+from tezos_domains.types.name_registry.tezos_big_maps.store_expiry_map_key import StoreExpiryMapKey
+from tezos_domains.types.name_registry.tezos_big_maps.store_expiry_map_value import StoreExpiryMapValue
 
 
 async def on_update_expiry_map(
     ctx: HandlerContext,
-    store_expiry_map: BigMapDiff[StoreExpiryMapKey, StoreExpiryMapValue],
+    store_expiry_map: TzktBigMapDiff[StoreExpiryMapKey, StoreExpiryMapValue],
 ) -> None:
     if not store_expiry_map.action.has_value:
         return
@@ -26,19 +28,24 @@ async def on_update_expiry_map(
     )
 
     domain = await models.Domain.get_or_none(id=record_name).prefetch_related('records')
-    if domain is not None:
-        domain.expires_at = expires_at  # type: ignore
-        await domain.save()
-        if expires_at > datetime.utcnow():
-            ctx.logger.debug('Updating expiration status for all records associated with domain %s (renewal)', domain.id)
-            for record in domain.records:  # type: models.Record
-                record.expired = False
-                await record.save()
-                if record.address is not None:
-                    metadata = {} if record.metadata is None else record.metadata
-                    metadata.update(name=record.id)
-                    await ctx.update_contract_metadata(
-                        network=ctx.datasource.network,
-                        address=record.address,
-                        metadata=metadata,
-                    )
+    if domain is None:
+        return
+
+    domain.expires_at = expires_at
+    await domain.save()
+
+    if expires_at < datetime.utcnow():
+        return
+
+    ctx.logger.debug('Updating expiration status for all records associated with domain %s (renewal)', domain.id)
+    for record in domain.records:
+        record.expired = False
+        await record.save()
+        if record.address is not None:
+            metadata = {} if record.metadata is None else cast(dict, record.metadata)
+            metadata.update(name=record.id)
+            await ctx.update_contract_metadata(
+                network=cast(TzktDatasource, ctx.datasource).network,
+                address=record.address,
+                metadata=metadata,
+            )

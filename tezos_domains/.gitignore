@@ -3,6 +3,7 @@
 !*/
 
 # Add metadata and build files
+!tezos_domains
 !.gitignore
 !.dockerignore
 !**/Dockerfile

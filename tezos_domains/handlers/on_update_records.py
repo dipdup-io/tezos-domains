@@ -1,27 +1,28 @@
-import json
 from contextlib import suppress
-from typing import Dict
+from typing import cast
 
+import orjson
 from dipdup.context import HandlerContext
-from dipdup.models import BigMapDiff
+from dipdup.datasources.tezos_tzkt import TzktDatasource
+from dipdup.models.tezos_tzkt import TzktBigMapDiff
 
-import tezos_domains.models as models
-from tezos_domains.types.name_registry.big_map.store_records_key import StoreRecordsKey
-from tezos_domains.types.name_registry.big_map.store_records_value import StoreRecordsValue
+from tezos_domains import models as models
+from tezos_domains.types.name_registry.tezos_big_maps.store_records_key import StoreRecordsKey
+from tezos_domains.types.name_registry.tezos_big_maps.store_records_value import StoreRecordsValue
 
 
-def decode_domain_data(data: Dict[str, str]) -> Dict[str, str]:
+def decode_domain_data(data: dict[str, str]) -> dict[str, str]:
     res = {}
     if isinstance(data, dict):
         for k, v in data.items():
-            with suppress(ValueError, json.JSONDecodeError):
-                res[k] = json.loads(bytes.fromhex(v).decode())
+            with suppress(ValueError, orjson.JSONDecodeError):
+                res[k] = orjson.loads(bytes.fromhex(v).decode())
     return res
 
 
 async def on_update_records(
     ctx: HandlerContext,
-    store_records: BigMapDiff[StoreRecordsKey, StoreRecordsValue],
+    store_records: TzktBigMapDiff[StoreRecordsKey, StoreRecordsValue],
 ) -> None:
     if not store_records.action.has_value:
         return
@@ -55,7 +56,7 @@ async def on_update_records(
         token_id = store_records.value.tzip12_token_id
         if token_id:
             await ctx.update_token_metadata(
-                network=ctx.datasource.network,
+                network=cast(TzktDatasource, ctx.datasource).network,
                 address=store_records.data.contract_address,
                 token_id=token_id,
                 metadata={
@@ -86,16 +87,13 @@ async def on_update_records(
             'domain_id': '.'.join(record_path[-2:]),
             'address': store_records.value.address,
             'expired': False,
-            'metadata': domain_data
+            'metadata': domain_data,
         },
     )
 
     if store_records.value.address is not None:
         await ctx.update_contract_metadata(
-            network=ctx.datasource.network,
+            network=cast(TzktDatasource, ctx.datasource).network,
             address=store_records.value.address,
-            metadata={
-                **domain_data,
-                'name': record_name
-            },
+            metadata={**domain_data, 'name': record_name},
         )

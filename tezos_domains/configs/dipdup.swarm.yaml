@@ -10,7 +10,7 @@ hasura:
   url: http://tezos-domains_hasura:8080
   admin_secret: ${HASURA_SECRET}
   allow_aggregations: false
-  camel_case: true
+  camel_case: false
 
 sentry:
   dsn: ${SENTRY_DSN:-""}

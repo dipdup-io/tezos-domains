@@ -1,28 +1,40 @@
 name: Build
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 on:
   push:
     branches:
-      - 'master'
+      - '**'
     tags:
-      - 'v*.*.*'
-  pull_request:
-    branches:
-      - 'master'
+      - '*.*.*'
+    paths:
+      - 'src/**'
+      - 'Dockerfile'
+      - 'pyproject.toml'
+      # NOTE: Dumped with `pdm run update`
+      - 'requirements.txt'
+      - '.github/workflows/build.yml'
 
 jobs:
   build:
     name: Build
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     env:
-      ACTIONS_ALLOW_UNSECURE_COMMANDS: true
       DOCKER_REGISTRY: ghcr.io
       DOCKER_IMAGE_NAME: ${{ github.repository }}
+
     steps:
       - name: Check out the repo
         uses: actions/checkout@v2
 
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v2
+
       - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v1
+        uses: docker/setup-buildx-action@v2
+        with:
+          install: true
 
       - name: Log in to the registry
         uses: docker/login-action@v1
@@ -31,17 +43,23 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Indexer image tags & labels
+      - name: Set up metadata
         id: meta
         uses: docker/metadata-action@v3
         with:
           images: ${{ env.DOCKER_REGISTRY }}/${{ env.DOCKER_IMAGE_NAME }}
+          flavor: |
+            latest=false
+          tags: |
+            type=ref,event=branch
+            type=ref,event=tag
 
-      - name: Indexer image build & push
-        uses: docker/build-push-action@v2
+      - name: Publish nightly image
+        uses: docker/build-push-action@v3
         with:
           context: tezos_domains
           file: tezos_domains/deploy/Dockerfile
+          platforms: linux/amd64,linux/arm64
           push: true
           cache-from: type=gha
           cache-to: type=gha,mode=max

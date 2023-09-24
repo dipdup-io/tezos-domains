@@ -1,6 +1,6 @@
-FROM dipdup/dipdup:7
+# FROM dipdup/dipdup:7
 # FROM ghcr.io/dipdup-io/dipdup:7
-# FROM ghcr.io/dipdup-io/dipdup:next
+FROM ghcr.io/dipdup-io/dipdup:next
 
 RUN pip install strict_rfc3339
 

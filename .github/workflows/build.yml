@@ -8,13 +8,6 @@ on:
       - '**'
     tags:
       - '*.*.*'
-    paths:
-      - 'src/**'
-      - 'Dockerfile'
-      - 'pyproject.toml'
-      # NOTE: Dumped with `pdm run update`
-      - 'requirements.txt'
-      - '.github/workflows/build.yml'
 
 jobs:
   build:

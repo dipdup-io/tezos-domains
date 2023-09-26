@@ -8,7 +8,7 @@ contracts:
     typename: name_registry
 
 datasources:
-  tzkt_mainnet:
+  mainnet:
     kind: tezos.tzkt
     url: ${TZKT_URL:-https://api.tzkt.io}
 
@@ -28,7 +28,7 @@ indexes:
   tezos_domains_big_map_mainnet:
     template: tezos_domains_big_map
     values:
-      datasource: tzkt_mainnet
+      datasource: mainnet
       name_registry: mainnet_name_registry
 
 hooks:

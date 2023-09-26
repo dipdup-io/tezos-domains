@@ -45,7 +45,7 @@ async def on_update_expiry_map(
             metadata = {} if record.metadata is None else cast(dict, record.metadata)
             metadata.update(name=record.id)
             await ctx.update_contract_metadata(
-                network=cast(TzktDatasource, ctx.datasource).network,
+                network=cast(TzktDatasource, ctx.datasource).name,
                 address=record.address,
                 metadata=metadata,
             )

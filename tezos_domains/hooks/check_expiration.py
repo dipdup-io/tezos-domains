@@ -22,7 +22,7 @@ async def check_expiration(
         if record.address:
             ctx.logger.debug('Invalidating contract metadata for %s @ %s', record.address, record.id)
             await ctx.update_contract_metadata(
-                network=ds.network,
+                network=ds.name,
                 address=record.address,
                 metadata={},  # TODO: NULL
             )

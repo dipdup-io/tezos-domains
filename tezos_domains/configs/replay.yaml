@@ -1,4 +1,6 @@
-# Run `dipdup new --replay configs/replay.yaml` to generate new project from this replay
+# To refresh existing project run `dipdup init --base --force` after modifying this file.
+# To generate a new project from this replay run `dipdup new --replay <path_to_file>`.
+#
 spec_version: 2.0
 replay:
   dipdup_version: 7
@@ -13,3 +15,4 @@ replay:
   postgres_data_path: /var/lib/postgresql/data
   hasura_image: hasura/graphql-engine:v2.30.1
   line_length: 120
+  package_manager: pdm

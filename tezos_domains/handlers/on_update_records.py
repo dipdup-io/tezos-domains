@@ -43,7 +43,7 @@ async def on_update_records(
         )
         return
 
-    if store_records.value.level == "1":
+    if store_records.value.level == '1':
         await models.TLD.update_or_create(
             id=record_name,
             defaults={
@@ -52,7 +52,7 @@ async def on_update_records(
         )
         return
 
-    if store_records.value.level == "2":
+    if store_records.value.level == '2':
         token_id = store_records.value.tzip12_token_id
         if token_id:
             await ctx.update_token_metadata(

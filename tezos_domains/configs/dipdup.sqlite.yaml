@@ -1,5 +1,3 @@
 database:
   kind: sqlite
   path: ${SQLITE_PATH:-/tmp/tezos_domains.sqlite}
-
-logging: ${LOGLEVEL:-INFO}

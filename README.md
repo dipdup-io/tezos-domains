@@ -1,14 +1,7 @@
-# Tezos domains indexer
-
-[![Made With](https://img.shields.io/badge/made%20with-dipdup-blue.svg?)](https://dipdup.net)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-
-Selective [Tezos Domains](https://tezos.domains/) indexer based on DipDup framework.  
-
-## GraphQL client
-
-```
-npm i @dipdup/domains
-```
-
-Read [how to use](./client/README.md) the GraphQL client for the TD service.
+<div align="center">
+  <h1> 301 Moved Permanently</h1>
+  <h3>
+    Tezos Domains indexer moved <a href="https://github.com/dipdup-io/dipdup/tree/next/src/demo_tezos_domains">here</a>
+  </h3>
+  <img src="https://tzkt.io/404.gif">
+</div>
